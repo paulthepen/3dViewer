@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/build/three.min.js"></script>
+    <script src="/examples/js/loaders/STLLoader.js"></script>
+    <script src="/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div id="model" style="width: 500px; height: 500px"> </div>
+</body>
+<script>
+    function STLViewer(model, elementID) {
+        const elem = document.getElementById(elementID);
+        const camera = new THREE.PerspectiveCamera(70, elem.clientWidth/elem.clientHeight, 1, 1000);
+
+        const render = new THREE.WebGLRenderer({ antialias: true, alpha: true});
+        render.setSize(elem.clientWidth, elem.clientHeight);
+        elem.appenChild(render.domElement);
+
+        let controls = new THREE.OrbitControls(camera, render.domElement);
+        controls.enableDamping = true;
+        controls.rotateSpeed = 0.05;
+        controls.dampingFactor = 0.1;
+        controls.enableZoom = true;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = .75;
+
+        let scene = new THREE.Scene();
+        scene.add(new THREE.HemisphereLight(0xffffff, 1.5));
+
+        (new THREE.STLLoader()).load(model, (geometry) => {
+            const material = new THREE.MeshPhongMaterial({
+                color: 0xcccccc,
+                specular: 100,
+                shininess: 100 
+            })
+            const mesh = new THREE.Mesh(geometry, material);
+
+            scene.add(mesh);
+        })
+    }
+
+</script>
+<script type="text/javascript">
+    window.onload = function() {
+        STLViewer("hook.stl", "model")
+    }
+    </script>
+</html>
+
+https://threejs.org/docs/#manual/en/introduction/Installation
+https://tonybox.net/posts/simple-stl-viewer/
