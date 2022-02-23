@@ -25,6 +25,8 @@
         controls.minPolarAngle = 0.01;
         controls.maxPolarAngle = Math.PI/2; 
         controls.enablePan = false;
+        controls.minDistance = 100;
+        controls.maxDistance = 400;
 
         const light = new THREE.DirectionalLight(0xccffff, 2.0);
         light.position.set = (new THREE.Vector3(0, 600, 0));
@@ -50,15 +52,14 @@
 
             const objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
-            objLoader.load('simplified.obj', (object) => {
-                console.log(object.rotation);
+            objLoader.load('JeepGladiator.obj', (object) => {
                 scene.add(object);
             }), () => {
                 //loading text
             };
         })
 
-        const geometry = new THREE.CircleGeometry( 200, 200 );
+        const geometry = new THREE.CircleGeometry( 1000, 1000 );
         const material = new THREE.MeshBasicMaterial( {color: 0x232323, side: THREE.DoubleSide} );
         const plane = new THREE.Mesh( geometry, material );
         plane.rotation.x = -1.60;
